@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+    // Need to call in the tea model and add local import above too
 	entries := 0
 
 	fmt.Println("Welcome to go-wordle")
