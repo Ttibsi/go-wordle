@@ -17,8 +17,9 @@ func main() {
 	fmt.Print("All answers are in complete lowercase\n\n")
 
 	// Get random word from list as array of char
-	var answer []string = generateAnswer()
-	answerWord := strings.Join(answer, "")
+    var validWords []string = getValidWords()
+	var answer string = generateAnswer(validWords)
+    var answerArray []string = strings.Split(answer, "") 
 
 	for entries < 6 {
 		// Ask user to enter a word
@@ -27,9 +28,12 @@ func main() {
 		fmt.Scan(&userInput)
 
 		// Validate word is in valid list
-		charArray := []string(strings.Split(userInput, ""))
-		if len(charArray) != 5 {
-			fmt.Println("Word invalid")
+		inputWordArray := []string(strings.Split(userInput, ""))
+		if len(inputWordArray) != 5 {
+			fmt.Println("Word invalid length")
+			continue
+        } else if !wordOnFile(validWords, userInput) {
+			fmt.Println("Word not present")
 			continue
 		} else {
 			entries += 1
@@ -37,10 +41,10 @@ func main() {
 
 		// Check each letter in input against answer
 		var score [5]string
-		for idx, val := range charArray {
-			if val == answer[idx] {
+		for idx, val := range inputWordArray {
+			if val == answerArray[idx] {
 				score[idx] = "Y"
-			} else if checkElsewhere(val, answer) {
+			} else if checkElsewhere(val, answerArray) {
 				score[idx] = "O"
 			} else {
 				score[idx] = "N"
@@ -54,7 +58,7 @@ func main() {
 		}
 	}
 
-	fmt.Println("\nThe word was:", answerWord)
+	fmt.Println("\nThe word was:", answer)
 	if entries < 6 {
 		fmt.Printf("You won in %v guesses\n", entries)
 	} else {
@@ -68,7 +72,7 @@ func check(e error) {
 	}
 }
 
-func generateAnswer() []string {
+func getValidWords() []string {
 	// Open wordlist.txt
 	file, err := os.Open("wordlist.txt")
 	check(err)
@@ -81,11 +85,23 @@ func generateAnswer() []string {
 		words = append(words, sc.Text())
 	}
 
+    return words
+}
+
+func generateAnswer(words []string) string {
 	// return a random word from the file
 	rand.Seed(time.Now().UnixNano())
-	var selectedWord = words[rand.Intn(len(words))]
+	return words[rand.Intn(len(words))]
+}
 
-	return []string(strings.Split(selectedWord, ""))
+func wordOnFile(validWords []string, userInput string) bool {
+    for _, word := range validWords {
+        if word == userInput {
+            return true
+        }
+    }
+
+    return false
 }
 
 func checkElsewhere(val string, charArray []string) bool {
