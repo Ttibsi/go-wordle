@@ -1,38 +1,39 @@
-package tui
+package game
 
 import (
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/bubbles/textinput"
+    "fmt"
+
+    tea "github.com/charmbracelet/bubbletea"
 )
 
 type model struct {
-    guesses [6][5]string // Words already guessed by user
-	answer  []string   // seed word generated from txtfile as char array
-	textInput textinput.Model
+    answer []string
+    guesses [][]string // user input guesses in char arrays
 }
 
 func initialModel() model {
 	return model{
-		guesses: [6][5]string{},
-		answer:  generateAnswer(),
+        answer: generateAnswer(),
+        guesses: [][]string{},
 	}
 }
 
 func (m model) Init() tea.Cmd {
-	return nil
+    // Just return `nil`, which means "no I/O right now, please."
+    return nil
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
         case tea.KeyMsg:
             switch msg.String() {
-            case "ctrl+c", "q":
-                return m, tea.Quit
-            case "enter":
-                var newGuess = getNewGuess()
-                // Take text entry from elsewhere and trigger a function to check word
-                // append as an array
-            }
+                case "ctrl+c", "q":
+                    return m, tea.Quit
+                case "enter":
+                    var newGuess = getNewGuess()
+                    // Take text entry from elsewhere and trigger a function to check word
+                    // append as an array
+                }
 	}
 
     return m, nil
@@ -61,4 +62,3 @@ func (m model) View() string {
     // Send the UI for rendering
     return s
 }
-

@@ -1,14 +1,12 @@
-package tui
+package game
 
 import (
-	"bufio"
-	"log"
-	"math/rand"
-	"os"
-	"strings"
-	"time"
-
-	"github.com/charmbracelet/bubbles/textinput"
+    "bufio"
+    "log"
+    "math/rand"
+    "os"
+    "strings"
+    "time"
 )
 
 func generateAnswer() []string {

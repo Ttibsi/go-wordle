@@ -1,4 +1,4 @@
-module go-wordle
+module github.com/Ttibsi/go-wordle
 
 go 1.18
 
