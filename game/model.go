@@ -115,8 +115,6 @@ func (m model) View() string {
 	// The header
 	s := "Go-Wordle\n\n"
 
-	// For testing
-	s += strings.Join(m.answer, "")
 	s += "\n"
 
 	//Render grid
@@ -126,11 +124,12 @@ func (m model) View() string {
 	//entry box
 	if !m.gameOver {
 		s += m.textInput.View()
+	} else {
+		s += m.output
 	}
 
 	// The footer
-	s += "\nq or ctrl+c to quit.\n"
-	s += m.output
+	s += "\nesc or ctrl+c to quit.\n"
 
 	// Send the UI for rendering
 	return s

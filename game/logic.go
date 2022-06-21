@@ -2,10 +2,10 @@ package game
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -88,7 +88,7 @@ func hasWon(score [5]int) bool {
 
 func endGame(hasWon bool, turn int, answer string) string {
 	if hasWon {
-		var ret = fmt.Sprintf("Congratulations, you won in %v turns", turn)
+		var ret = "Contgratulations, you've won in " + strconv.Itoa(turn) + " turns"
 		return ret
 	} else {
 		return "You lose. Feel free to try again!\nThe word was: " + answer
