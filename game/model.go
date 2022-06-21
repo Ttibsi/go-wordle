@@ -26,6 +26,8 @@ type model struct {
 	turn      int
 	textInput textinput.Model
 	err       error
+	output    string
+	gameOver  bool
 }
 
 func InitialModel() model {
@@ -56,6 +58,8 @@ func InitialModel() model {
 		turn:      0,
 		textInput: ti,
 		err:       nil,
+		output:    "",
+		gameOver:  false,
 	}
 }
 
@@ -83,10 +87,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				// Check if game over
 				if hasWon(m.scores[m.turn-1]) {
-					endGame(true, m.turn, strings.Join(m.answer, ""))
+					m.gameOver = true
+					m.output = endGame(true, m.turn, strings.Join(m.answer, ""))
 					return m, tea.Quit
-				} else if m.turn-1 == 6 {
-					endGame(false, m.turn, strings.Join(m.answer, ""))
+				} else if m.turn == 6 {
+					m.gameOver = true
+					m.output = endGame(false, m.turn, strings.Join(m.answer, ""))
 					return m, tea.Quit
 				}
 			}
@@ -118,10 +124,13 @@ func (m model) View() string {
 	s += "\n"
 
 	//entry box
-	s += m.textInput.View()
+	if !m.gameOver {
+		s += m.textInput.View()
+	}
 
 	// The footer
 	s += "\nq or ctrl+c to quit.\n"
+	s += m.output
 
 	// Send the UI for rendering
 	return s

@@ -86,12 +86,12 @@ func hasWon(score [5]int) bool {
 	return true
 }
 
-func endGame(hasWon bool, turn int, answer string) {
+func endGame(hasWon bool, turn int, answer string) string {
 	if hasWon {
-		fmt.Printf("Congratulations, you won in %v turns\n", turn)
+		var ret = fmt.Sprintf("Congratulations, you won in %v turns", turn)
+		return ret
 	} else {
-		fmt.Println("You lose. Feel free to try again!")
-		fmt.Println("The word was: ", answer)
+		return "You lose. Feel free to try again!\nThe word was: " + answer
 	}
 
 }
