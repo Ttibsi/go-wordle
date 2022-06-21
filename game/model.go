@@ -76,14 +76,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			} else {
 				m.turn += 1
 				var userInput = m.textInput.Value()
-				m.scores[m.turn] = m.checkGuess(userInput)
+				userInputArr := (*[5]string)(strings.Split(userInput, ""))
+				m.guesses[m.turn-1] = *userInputArr
+				m.scores[m.turn-1] = m.checkGuess(userInput)
 				m.textInput.SetValue("")
 
 				// Check if game over
-				if hasWon(m.scores[m.turn]) {
+				if hasWon(m.scores[m.turn-1]) {
 					endGame(true, m.turn, strings.Join(m.answer, ""))
-				} else if m.turn == 6 {
+					return m, tea.Quit
+				} else if m.turn-1 == 6 {
 					endGame(false, m.turn, strings.Join(m.answer, ""))
+					return m, tea.Quit
 				}
 			}
 
@@ -105,8 +109,13 @@ func (m model) View() string {
 	// The header
 	s := "Go-Wordle\n\n"
 
-    //Render grid
-    s += m.renderGrid()
+	// For testing
+	s += strings.Join(m.answer, "")
+	s += "\n"
+
+	//Render grid
+	s += m.renderGrid()
+	s += "\n"
 
 	//entry box
 	s += m.textInput.View()
