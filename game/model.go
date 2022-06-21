@@ -1,13 +1,11 @@
 package game
 
 import (
-	"fmt"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/charmbracelet/bubbles/textinput"
-	"github.com/charmbracelet/lipgloss"
 )
 
 /*
@@ -18,17 +16,6 @@ a border around it in the appropriate colour. If the word is otherwise
 inappropriate, the screen will shake or there will be a warning of some
 kind informing the user
 */
-
-var style = lipgloss.NewStyle().
-	BorderStyle(lipgloss.RoundedBorder()).
-	BorderTop(true).
-	BorderLeft(true).
-	BorderBottom(true).
-	BorderRight(true).
-	Width(10).
-	Padding(2).
-	MaxHeight(6).
-	MaxWidth(5)
 
 type errMsg error
 
@@ -118,24 +105,8 @@ func (m model) View() string {
 	// The header
 	s := "Go-Wordle\n\n"
 
-	// Words and display
-	for idx, item := range m.guesses {
-		// Render row
-		var row string
-		for idy, letter := range item {
-			if m.scores[idx][idy] == 0 {
-				row += style.BorderForeground(lipgloss.Color("#aaaaaa")).Render(letter)
-			} else if m.scores[idx][idy] == 1 {
-				row += style.BorderForeground(lipgloss.Color("#c93b22")).Render(letter)
-			} else if m.scores[idx][idy] == 2 {
-				row += style.BorderForeground(lipgloss.Color("#db9c27")).Render(letter)
-			} else if m.scores[idx][idy] == 3 {
-				row += style.BorderForeground(lipgloss.Color("#66b823")).Render(letter)
-			}
-		}
-
-		s += fmt.Sprintf(row + "\n")
-	}
+    //Render grid
+    s += m.renderGrid()
 
 	//entry box
 	s += m.textInput.View()
