@@ -113,8 +113,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 // User interface stored as a string
 func (m model) View() string {
 	// The header
-	s := "Go-Wordle\n\n"
-
+	s := "Go-Wordle\n"
 	s += "\n"
 
 	//Render grid
